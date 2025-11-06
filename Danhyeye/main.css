@@ -778,7 +778,7 @@ body {
     margin-bottom: 3rem;
 }
 
-/* Each grid item now wraps a card and actions */
+/* Each grid item wraps a card and its actions below */
 .project-item { display: flex; flex-direction: column; }
 
 .project-card {
@@ -935,12 +935,8 @@ body {
     background-color: #444;
 }
 
-.project-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: auto;            /* push links to the bottom when used inside card */
-    padding-top: 1.5rem;  
-}
+/* Deprecated internal links block kept for backward-compatibility */
+.project-links { display: none; }
 
 /* Actions rendered under the card */
 .project-actions {
