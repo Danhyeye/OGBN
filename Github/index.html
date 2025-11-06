@@ -1,0 +1,412 @@
+<!-- filename: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ryan Sullivan - Resume and CV Template</title>
+  <meta name="description" content="Ryan Sullivan — Product Designer dedicated to creating intuitive and engaging digital experiences." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0e0f12;
+      --card: #14161b;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --primary: #4f7cff;
+      --accent: #7bffb3;
+      --border: #262a33;
+      --link: #8ab4f8;
+      --shadow: 0 8px 24px rgba(0,0,0,0.25);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-lg: 22px;
+      --maxw: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% -10%, #1b1f27 0%, #0e0f12 40%) fixed, var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:var(--maxw); margin:0 auto; padding:28px 20px}
+    header.site{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:16px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(255,255,255,0.04);
+      border:1px solid var(--border);
+    }
+    .avatar{
+      width:36px; height:36px; border-radius:50%;
+      background: linear-gradient(135deg,#4f7cff,#7bffb3);
+      box-shadow: var(--shadow);
+    }
+    .brand h1{font-size:16px; margin:0; font-weight:700}
+    .brand .role{font-size:13px; color:var(--muted); margin-left:6px}
+    .status{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; color:#b7ffcf; background:rgba(123,255,179,0.08)}
+    nav.social{display:flex; gap:8px}
+    .icon-btn{
+      width:36px; height:36px; border-radius:10px;
+      display:grid; place-items:center;
+      background:#161922; border:1px solid var(--border);
+      color:var(--text);
+    }
+    /* Hero */
+    .hero{
+      margin-top:18px;
+      display:grid; grid-template-columns: 1.2fr 0.8fr; gap:24px;
+    }
+    @media (max-width: 900px){
+      .hero{grid-template-columns: 1fr}
+    }
+    .hero-card{
+      border:1px solid var(--border); border-radius:var(--radius-lg);
+      background: linear-gradient(180deg,#151821 0%, #12151c 100%);
+      padding:28px;
+      box-shadow: var(--shadow);
+      position:relative; overflow:hidden;
+    }
+    .hero-card::after{
+      content:""; position:absolute; inset:auto -80px -80px auto;
+      width:240px; height:240px; border-radius:50%;
+      background: radial-gradient(closest-side, rgba(79,124,255,0.35), transparent);
+      filter: blur(10px);
+      pointer-events:none;
+    }
+    .hero h2{font-size:28px; margin:0 0 8px; font-weight:800}
+    .hero .tagline{color:var(--muted); font-size:16px; margin-bottom:14px}
+    .hero .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 16px; border-radius:12px; font-weight:600; font-size:14px;
+      border:1px solid var(--border); background:#1a1e27; color:var(--text);
+    }
+    .btn.primary{background:var(--primary); border-color:#3b5fd7; color:white}
+    .btn.ghost{background:transparent}
+    /* Contact strip */
+    .contact-strip{
+      margin-top:14px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .chip{
+      font-size:12px; padding:8px 12px; border-radius:999px;
+      border:1px dashed #324056; color:var(--muted); background:rgba(49,61,82,0.18);
+    }
+    /* Services */
+    .services{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;
+      margin-top:18px;
+    }
+    @media (max-width: 900px){ .services{grid-template-columns: 1fr 1fr} }
+    @media (max-width: 600px){ .services{grid-template-columns: 1fr} }
+    .service-card{
+      background:#141922; border:1px solid var(--border); border-radius:var(--radius);
+      padding:16px; display:flex; align-items:center; gap:12px;
+    }
+    .service-icon{
+      width:34px; height:34px; border-radius:10px;
+      background:linear-gradient(135deg,#263248,#1b2437); border:1px solid #2a344a;
+    }
+    /* Works */
+    section#works{margin-top:40px}
+    section#works h3{font-size:22px; margin:0 0 10px; font-weight:800}
+    .grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;
+    }
+    @media (max-width: 900px){ .grid{grid-template-columns: 1fr 1fr} }
+    @media (max-width: 600px){ .grid{grid-template-columns: 1fr} }
+    .work-card{
+      background:#12161f; border:1px solid var(--border); border-radius:var(--radius);
+      overflow:hidden; display:flex; flex-direction:column;
+    }
+    .work-thumb{height:140px; background:linear-gradient(135deg,#1f2740,#2a364f)}
+    .work-body{padding:14px}
+    .work-title{font-weight:700}
+    .work-sub{color:var(--muted); font-size:13px}
+    /* Stats */
+    .stats{
+      margin-top:26px; display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;
+    }
+    @media (max-width: 900px){ .stats{grid-template-columns: 1fr 1fr} }
+    @media (max-width: 600px){ .stats{grid-template-columns: 1fr} }
+    .stat{
+      border:1px solid var(--border); border-radius:var(--radius);
+      background:#14161b; padding:18px; text-align:center;
+    }
+    .stat .num{font-size:28px; font-weight:800}
+    .stat .label{color:var(--muted); font-size:13px}
+    /* Testimonial */
+    .testimonial{
+      margin-top:30px; border:1px solid var(--border); border-radius:var(--radius-lg);
+      background:linear-gradient(180deg,#141821 0%,#131620 100%);
+      padding:24px;
+    }
+    blockquote{margin:0; font-size:16px}
+    figcaption{margin-top:10px; color:var(--muted); font-size:14px}
+    /* Experiences */
+    section#experience{margin-top:36px}
+    .timeline{display:grid; gap:12px}
+    .exp{
+      display:grid; grid-template-columns: 120px 1fr; gap:14px;
+      background:#141922; border:1px solid var(--border); border-radius:var(--radius);
+      padding:14px;
+    }
+    @media (max-width: 600px){ .exp{grid-template-columns: 1fr; } .exp .when{color:var(--muted)} }
+    .exp .badge{
+      width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,#2a3350,#202846); border:1px solid #2b3452; margin-right:10px;
+    }
+    /* Footer */
+    footer{
+      margin-top:40px; border-top:1px solid var(--border);
+      padding:20px 0; color:var(--muted); font-size:13px;
+    }
+    .footer-links{display:flex; gap:12px; flex-wrap:wrap}
+    .footer-row{display:flex; justify-content:space-between; gap:12px; align-items:center}
+    @media (max-width: 700px){ .footer-row{flex-direction:column; align-items:flex-start} }
+    /* Utility */
+    .sr-only{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="site" aria-label="Site header">
+      <div class="brand">
+        <div class="avatar" aria-hidden="true"></div>
+        <div>
+          <h1>Ryan Sullivan <span class="role">Product Designer</span></h1>
+        </div>
+      </div>
+      <span class="status" title="Availability">Available for work</span>
+      <nav class="social" aria-label="Social links">
+        <a class="icon-btn" href="https://www.facebook.com/" aria-label="Facebook 1">F</a>
+        <a class="icon-btn" href="https://www.linkedin.com/" aria-label="Facebook 2">F</a>
+        <a class="icon-btn" href="https://www.instagram.com/" aria-label="Instagram">IG</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-card">
+          <h2 id="hero-title">“I do what I love, and I love what I do”</h2>
+          <p class="tagline">I'm Ryan Sullivan, a product designer dedicated to creating intuitive and engaging digital experiences.</p>
+          <p>Explore my <a href="https://ryan-sullivan-template.framer.website/#work">works</a> to see how I blend creativity with usability, and feel free to <a href="https://ryan-sullivan-template.framer.website/">reach out</a> and collaborate on something great!</p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="https://cal.com/">Book a call</a>
+            <a class="btn ghost" href="https://ryan-sullivan-template.framer.website/work">View all my works</a>
+          </div>
+
+          <div class="contact-strip" aria-label="Contact emails">
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+            <span class="chip">name@company.com</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Location and services">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <div class="service-icon" aria-hidden="true"></div>
+            <div>
+              <strong>Location</strong>
+              <div><a href="https://www.google.com/maps">3193 Gibson Run, 47747-1193, NYC</a></div>
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <strong>Contact</strong> — <a href="mailto:name@company.com">name@company.com</a>
+          </div>
+
+          <div class="services" aria-label="Services">
+            <div class="service-card">
+              <div class="service-icon" aria-hidden="true"></div>
+              <div>Product design</div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon" aria-hidden="true"></div>
+              <div>UI/UX design</div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon" aria-hidden="true"></div>
+              <div>Brand design</div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon" aria-hidden="true"></div>
+              <div>3D animation</div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon" aria-hidden="true"></div>
+              <div>Visual identity</div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon" aria-hidden="true"></div>
+              <div><a href="https://cal.com/">Book a call</a></div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="works" aria-labelledby="works-title">
+        <h3 id="works-title">Works</h3>
+        <div class="grid">
+          <article class="work-card">
+            <a href="https://ryan-sullivan-template.framer.website/work/web-spark" class="work-thumb" aria-label="Web Spark 3D Animation"></a>
+            <div class="work-body">
+              <div class="work-title">Web Spark</div>
+              <div class="work-sub">3D Animation</div>
+            </div>
+          </article>
+          <article class="work-card">
+            <a href="https://ryan-sullivan-template.framer.website/work/vision-forge" class="work-thumb" aria-label="Vision Forge Digital Art"></a>
+            <div class="work-body">
+              <div class="work-title">Vision Forge</div>
+              <div class="work-sub">Digital Art</div>
+            </div>
+          </article>
+          <article class="work-card">
+            <a href="https://ryan-sullivan-template.framer.website/work/design-pulse" class="work-thumb" aria-label="Design Pulse UI/UX Design"></a>
+            <div class="work-body">
+              <div class="work-title">Design Pulse</div>
+              <div class="work-sub">UI/UX Design</div>
+            </div>
+          </article>
+          <article class="work-card">
+            <a href="https://ryan-sullivan-template.framer.website/work/flow-create" class="work-thumb" aria-label="Flow Create Motion Graphics"></a>
+            <div class="work-body">
+              <div class="work-title">Flow Create</div>
+              <div class="work-sub">Motion Graphics</div>
+            </div>
+          </article>
+          <article class="work-card">
+            <a href="https://ryan-sullivan-template.framer.website/work/abstract-motion" class="work-thumb" aria-label="Abstract Motion Experimental Art"></a>
+            <div class="work-body">
+              <div class="work-title">Abstract Motion</div>
+              <div class="work-sub">Experimental Art</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="cta-row" style="margin-top:14px;">
+          <a class="btn" href="https://ryan-sullivan-template.framer.website/work">View all my works</a>
+        </div>
+      </section>
+
+      <section aria-label="Stats" class="stats">
+        <div class="stat">
+          <div class="num">50+</div>
+          <div class="label">Successful projects delivered</div>
+        </div>
+        <div class="stat">
+          <div class="num">6</div>
+          <div class="label">Years of industry experience</div>
+        </div>
+        <div class="stat">
+          <div class="num">98%</div>
+          <div class="label">Client satisfaction rate</div>
+        </div>
+      </section>
+
+      <section aria-labelledby="testimonial-title" class="testimonial">
+        <h3 id="testimonial-title" class="sr-only">Testimonial</h3>
+        <blockquote>
+          “Professional, creative, and highly skilled!”
+          <br />
+          The UI/UX design transformed our product’s user experience. Every detail was carefully crafted to enhance usability and engagement. The design exceeded our expectations, delivering both aesthetics and functionality seamlessly.
+        </blockquote>
+        <figcaption>— Alex Thompson, CEO of InnovateTech</figcaption>
+      </section>
+
+      <section id="experience" aria-labelledby="exp-title">
+        <h3 id="exp-title">Experiences</h3>
+        <div class="timeline">
+          <div class="exp">
+            <div class="when">2023–present</div>
+            <div>
+              <div style="display:flex; align-items:center;">
+                <div class="badge" aria-hidden="true"></div>
+                <div style="margin-left:12px;">
+                  <strong>CreativeTech</strong>
+                  <div class="work-sub">Senior Product Designer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="exp">
+            <div class="when">2021–2023</div>
+            <div>
+              <div style="display:flex; align-items:center;">
+                <div class="badge" aria-hidden="true"></div>
+                <div style="margin-left:12px;">
+                  <strong>Vision Sol.</strong>
+                  <div class="work-sub">UI/UX Designer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="exp">
+            <div class="when">2019–2021</div>
+            <div>
+              <div style="display:flex; align-items:center;">
+                <div class="badge" aria-hidden="true"></div>
+                <div style="margin-left:12px;">
+                  <strong>NextGen</strong>
+                  <div class="work-sub">Junior Product Designer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-row">
+        <div class="footer-links">
+          <a href="https://ryan-sullivan-template.framer.website/404">404</a>
+          <a href="https://ryan-sullivan-template.framer.website/licenses">Licenses</a>
+          <a href="https://ryan-sullivan-template.framer.website/legal-pages/privacy-policy">Privacy Policy</a>
+        </div>
+        <div>
+          Designed by <a href="https://starterrr.com/">Starterrr</a>, Powered by <a href="https://framer.com/">Framer</a>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <a href="https://www.framer.com">Create a free website with Framer, the website builder loved by startups, designers and agencies.</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Optional small enhancement: smooth scroll for internal anchors
+    // (none in this page, but keeps the template ready)
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('a[href^="#"]');
+      if (!target) return;
+      const id = target.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el){
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth'});
+      }
+    });
+  </script>
+</body>
+</html>
