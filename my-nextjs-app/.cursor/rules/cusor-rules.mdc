@@ -1,0 +1,448 @@
+---
+alwaysApply: true
+---
+# Senior Frontend Development - Cursor Rules
+
+## Core Principles
+- You are the senior developer have the sign of the UI UX
+- Write clean, maintainable, and scalable code
+- Follow SOLID principles and DRY methodology
+- Prioritize performance, accessibility (WCAG 2.1 AA), and SEO
+- Use semantic HTML5 and proper ARIA labels
+- Implement proper error boundaries and loading states
+- Write self-documenting code with meaningful variable names
+
+## TypeScript Standards
+- Use strict TypeScript configuration
+- Define explicit types/interfaces, avoid `any`
+- Use discriminated unions for complex state management
+- Implement proper type guards and narrowing
+- Prefer `unknown` over `any` when type is uncertain
+- Use `const` assertions for literal types
+- Document complex types with TSDoc comments
+
+## React Best Practices
+- Use functional components with hooks exclusively
+- Implement proper memoization (useMemo, useCallback, React.memo)
+- Follow hooks rules and dependency array best practices
+- Use custom hooks for reusable logic extraction
+- Implement proper cleanup in useEffect
+- Prefer composition over prop drilling (Context API, Zustand)
+- Use React.lazy and Suspense for code splitting
+- Implement proper error boundaries for fault isolation
+- Use React Server Components when applicable (Next.js)
+
+## State Management
+- Keep state as local as possible
+- Lift state only when necessary
+- Use proper state management libraries for global state (Zustand, Redux Toolkit)
+- Implement optimistic UI updates where appropriate
+- Use proper data fetching strategies (React Query, SWR)
+- Normalize complex nested state structures
+- Implement proper loading, error, and empty states
+
+## Tailwind CSS - Responsive Design Strategy
+
+### Mobile-First Approach (Required)
+Always write mobile styles first, then add breakpoint modifiers:
+
+```jsx
+// ✅ CORRECT - Mobile first
+<div className="p-4 md:p-6 lg:p-8 xl:p-10">
+  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Title</h1>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    {/* Content */}
+  </div>
+</div>
+
+// ❌ WRONG - Desktop first
+<div className="p-10 md:p-6 sm:p-4">
+```
+
+### Breakpoint Standards
+```
+sm:  640px  - Large phones (landscape)
+md:  768px  - Tablets
+lg:  1024px - Laptops/Small desktops
+xl:  1280px - Desktops
+2xl: 1536px - Large desktops
+```
+
+### Responsive Patterns
+
+#### Layout Patterns
+```jsx
+// Container with proper padding
+<div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+
+// Responsive flex direction
+<div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
+
+// Responsive grid
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+
+// Responsive spacing
+<section className="py-8 md:py-12 lg:py-16 xl:py-20">
+```
+
+#### Typography Patterns
+```jsx
+// Heading scales
+<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+<h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">
+<h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold">
+
+// Body text
+<p className="text-sm sm:text-base md:text-lg leading-relaxed">
+
+// Responsive line clamps
+<p className="line-clamp-3 md:line-clamp-4 lg:line-clamp-none">
+```
+
+#### Component Sizing
+```jsx
+// Buttons
+<button className="px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 text-sm md:text-base lg:text-lg">
+
+// Images/Media
+<img className="w-full md:w-1/2 lg:w-1/3 h-auto" />
+
+// Cards
+<div className="rounded-lg md:rounded-xl lg:rounded-2xl p-4 md:p-6 lg:p-8">
+```
+
+#### Visibility Utilities
+```jsx
+// Hide on mobile, show on desktop
+<div className="hidden md:block">
+
+// Show on mobile, hide on desktop
+<div className="block md:hidden">
+
+// Responsive visibility
+<div className="block sm:hidden lg:block">
+```
+
+### Common Responsive Layouts
+
+#### Navigation
+```jsx
+<nav className="flex items-center justify-between p-4 md:p-6">
+  <Logo className="h-8 md:h-10 lg:h-12" />
+  
+  {/* Mobile menu button */}
+  <button className="md:hidden">
+    <MenuIcon />
+  </button>
+  
+  {/* Desktop menu */}
+  <ul className="hidden md:flex space-x-6 lg:space-x-8">
+    <li>Home</li>
+    <li>About</li>
+  </ul>
+</nav>
+```
+
+#### Hero Section
+```jsx
+<section className="min-h-screen flex items-center py-12 md:py-16 lg:py-20">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <div className="w-full lg:w-1/2 text-center lg:text-left">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">
+        <p className="text-base md:text-lg lg:text-xl mb-6 md:mb-8">
+      </div>
+      <div className="w-full lg:w-1/2">
+        <img className="w-full h-auto rounded-xl lg:rounded-2xl" />
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+## GSAP Animation Standards
+
+### Setup & Installation
+```bash
+npm install gsap
+```
+
+### Import Strategy
+```typescript
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+// Register plugins once in main app file
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+```
+
+### React + GSAP Patterns
+
+#### Basic Animation Hook
+```typescript
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+
+function AnimatedComponent() {
+  const elementRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(elementRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: 'power3.out'
+      });
+    });
+    
+    // Cleanup
+    return () => ctx.revert();
+  }, []);
+  
+  return <div ref={elementRef}>Animated Content</div>;
+}
+```
+
+#### ScrollTrigger Integration
+```typescript
+useEffect(() => {
+  const ctx = gsap.context(() => {
+    gsap.from('.fade-in', {
+      scrollTrigger: {
+        trigger: '.fade-in',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse',
+        markers: false // Set true for debugging
+      },
+      opacity: 0,
+      y: 100,
+      stagger: 0.2,
+      duration: 1,
+      ease: 'power3.out'
+    });
+  });
+  
+  return () => ctx.revert();
+}, []);
+```
+
+#### Complex Timeline
+```typescript
+useEffect(() => {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: sectionRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      scrub: 1,
+      pin: true
+    }
+  });
+  
+  tl.from('.title', { opacity: 0, y: 50, duration: 0.5 })
+    .from('.subtitle', { opacity: 0, y: 30, duration: 0.5 }, '-=0.2')
+    .from('.content', { opacity: 0, scale: 0.8, duration: 0.5 }, '-=0.2');
+  
+  return () => tl.kill();
+}, []);
+```
+
+### Common GSAP Animation Patterns
+
+#### Entrance Animations
+```typescript
+// Fade in from bottom
+gsap.from(element, {
+  opacity: 0,
+  y: 50,
+  duration: 0.8,
+  ease: 'power3.out'
+});
+
+// Scale in
+gsap.from(element, {
+  scale: 0,
+  opacity: 0,
+  duration: 0.6,
+  ease: 'back.out(1.7)'
+});
+
+// Staggered list animation
+gsap.from('.list-item', {
+  opacity: 0,
+  x: -50,
+  stagger: 0.1,
+  duration: 0.6,
+  ease: 'power2.out'
+});
+```
+
+#### Scroll Parallax
+```typescript
+gsap.to('.parallax-element', {
+  y: -100,
+  scrollTrigger: {
+    trigger: '.parallax-section',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: true
+  }
+});
+```
+
+#### Hover Animations (with React)
+```typescript
+const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  gsap.to(e.currentTarget, {
+    scale: 1.05,
+    duration: 0.3,
+    ease: 'power2.out'
+  });
+};
+
+const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+  gsap.to(e.currentTarget, {
+    scale: 1,
+    duration: 0.3,
+    ease: 'power2.out'
+  });
+};
+```
+
+#### Page Transitions
+```typescript
+// On route change
+const exitAnimation = () => {
+  return gsap.to('.page-content', {
+    opacity: 0,
+    y: -50,
+    duration: 0.4,
+    ease: 'power2.in'
+  });
+};
+
+const enterAnimation = () => {
+  return gsap.from('.page-content', {
+    opacity: 0,
+    y: 50,
+    duration: 0.6,
+    ease: 'power3.out'
+  });
+};
+```
+
+### GSAP Performance Best Practices
+- Use `will-change: transform` for animated elements
+- Animate transform and opacity properties (GPU accelerated)
+- Use `gsap.context()` for automatic cleanup in React
+- Kill timelines/animations on unmount
+- Use `scrub` for scroll-based animations for smoothness
+- Batch DOM queries outside animation loops
+- Use `force3D: true` for better performance on mobile
+- Avoid animating width/height (use scale instead)
+- Use `invalidateOnRefresh: true` for responsive animations
+
+### GSAP Easing Reference
+```typescript
+// Common eases
+ease: 'power1.out'    // Gentle deceleration
+ease: 'power2.out'    // Medium deceleration
+ease: 'power3.out'    // Strong deceleration
+ease: 'power4.out'    // Very strong deceleration
+ease: 'back.out(1.7)' // Overshoot effect
+ease: 'elastic.out'   // Elastic bounce
+ease: 'bounce.out'    // Bounce effect
+ease: 'none'          // Linear
+```
+
+## Performance Optimization
+- Implement lazy loading for images (native loading="lazy")
+- Use dynamic imports for heavy components
+- Optimize images (WebP, AVIF with fallbacks)
+- Implement virtual scrolling for long lists (react-window, tanstack-virtual)
+- Use proper caching strategies (Cache-Control headers)
+- Minimize bundle size (tree shaking, code splitting)
+- Use Web Vitals for monitoring (LCP, FID, CLS)
+- Implement proper image sizing with responsive srcset
+- Debounce/throttle expensive operations
+- Use CSS containment for isolated components
+
+## Accessibility (A11y)
+- Provide alt text for all images
+- Use semantic HTML (nav, main, article, section)
+- Implement keyboard navigation (focus management)
+- Ensure sufficient color contrast (4.5:1 minimum)
+- Add ARIA labels where necessary
+- Test with screen readers
+- Use focus-visible for keyboard focus styles
+- Implement skip links for navigation
+- Ensure form inputs have associated labels
+
+## Testing Requirements
+- Write unit tests for utilities and hooks (Vitest, Jest)
+- Implement integration tests for critical flows (Testing Library)
+- Use E2E tests for user journeys (Playwright, Cypress)
+- Maintain 80%+ code coverage for business logic
+- Test accessibility with jest-axe
+- Implement visual regression testing (Chromatic, Percy)
+
+## Code Organization
+```
+src/
+├── components/
+│   ├── ui/           # Reusable UI components
+│   ├── features/     # Feature-specific components
+│   └── layouts/      # Layout components
+├── hooks/            # Custom React hooks
+├── utils/            # Utility functions
+├── lib/              # Third-party library configs
+├── types/            # TypeScript types/interfaces
+├── constants/        # App constants
+├── services/         # API services
+└── styles/           # Global styles, Tailwind config
+```
+
+## Git Commit Convention
+Use conventional commits:
+- `feat:` New feature
+- `fix:` Bug fix
+- `refactor:` Code refactoring
+- `perf:` Performance improvement
+- `style:` Code style changes
+- `test:` Test updates
+- `docs:` Documentation changes
+- `chore:` Build/tooling changes
+
+## Code Review Checklist
+- [ ] Code follows established patterns
+- [ ] TypeScript types are properly defined
+- [ ] Components are properly memoized
+- [ ] Responsive design works on all breakpoints
+- [ ] Animations are smooth and performant
+- [ ] Accessibility requirements met
+- [ ] Tests are included and passing
+- [ ] No console.logs or debugger statements
+- [ ] Error handling implemented
+- [ ] Loading states implemented
+- [ ] Code is documented where necessary
+
+## Security Best Practices
+- Sanitize user inputs
+- Use environment variables for sensitive data
+- Implement Content Security Policy (CSP)
+- Use HTTPS for all requests
+- Implement proper CORS policies
+- Avoid inline scripts and styles
+- Keep dependencies updated
+- Use security headers (X-Frame-Options, etc.)
+
+## Documentation Standards
+- Document complex logic with comments
+- Use JSDoc for public APIs
+- Maintain README for setup instructions
+- Document environment variables
+- Keep architectural decisions recorded (ADRs)
+- Document breaking changes in CHANGELOG
