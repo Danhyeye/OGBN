@@ -20,6 +20,9 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Ông Gánh Bà Nâng - Games",
   description: "Games for Ông Gánh Bà Nâng",
+  icons: {
+    icon: "/images/main-logo.webp",
+  },
 };
 
 export default function GamesLayout({
