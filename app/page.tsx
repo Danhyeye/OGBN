@@ -1,10 +1,10 @@
 
-import DesktopLayout from "./components/landing";
+import LandingPage from "./components/landing";
 
 export default function Home() {  
   return (
     <>
-      <DesktopLayout />
+      <LandingPage />
     </>
   );    
 }

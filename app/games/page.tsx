@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import DragDropGame, { ImageItem } from '../components/drag-drop-game'
 import Image from 'next/image'
 

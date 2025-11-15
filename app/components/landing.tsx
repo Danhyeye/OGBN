@@ -7,37 +7,347 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
+import { Menu, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
-export default function DesktopLayout({ className }: { className?: string }) {
+gsap.registerPlugin(ScrollToPlugin);
+
+export default function LandingPage({ className }: { className?: string }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuIconRef = useRef<SVGSVGElement>(null);
+  const closeIconRef = useRef<SVGSVGElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (!menuIconRef.current || !closeIconRef.current || !dropdownRef.current) return;
+
+    const ctx = gsap.context(() => {
+      if (isMenuOpen) {
+        const tl = gsap.timeline();
+        
+        // Show dropdown first
+        gsap.set(dropdownRef.current, {
+          display: "block",
+          pointerEvents: "auto",
+        });
+        
+        tl.to(menuIconRef.current, {
+          opacity: 0,
+          rotation: 90,
+          scale: 0,
+          duration: 0.4,
+          ease: "power2.inOut",
+        })
+        .fromTo(
+          closeIconRef.current,
+          {
+            opacity: 0,
+            rotation: -90,
+            scale: 0,
+          },
+          {
+            opacity: 1,
+            rotation: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
+          "-=0.2"
+        );
+        
+        // Animate dropdown appearance
+        gsap.fromTo(
+          dropdownRef.current,
+          {
+            opacity: 0,
+            y: -20,
+            scale: 0.9,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: "power3.out",
+            delay: 0.1,
+            onComplete: () => {
+              const menuItems = dropdownRef.current?.querySelectorAll(".menu-item");
+              if (menuItems) {
+                gsap.fromTo(
+                  menuItems,
+                  {
+                    opacity: 0,
+                    x: -20,
+                  },
+                  {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.4,
+                    ease: "power2.out",
+                    stagger: 0.1,
+                  }
+                );
+              }
+            },
+          }
+        );
+      } else {
+        const tl = gsap.timeline();
+        
+        // Animate dropdown disappearance
+        if (dropdownRef.current) {
+          gsap.to(dropdownRef.current, {
+            opacity: 0,
+            y: -20,
+            scale: 0.9,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => {
+              if (dropdownRef.current) {
+                gsap.set(dropdownRef.current, {
+                  display: "none",
+                  pointerEvents: "none",
+                });
+              }
+            },
+          });
+        }
+        
+        tl.to(closeIconRef.current, {
+          opacity: 0,
+          rotation: -90,
+          scale: 0,
+          duration: 0.4,
+          ease: "power2.inOut",
+        })
+        .fromTo(
+          menuIconRef.current,
+          {
+            opacity: 0,
+            rotation: 90,
+            scale: 0,
+          },
+          {
+            opacity: 1,
+            rotation: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
+          "-=0.2"
+        );
+      }
+    });
+
+    return () => ctx.revert();
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (menuIconRef.current && closeIconRef.current && dropdownRef.current) {
+      gsap.set(menuIconRef.current, {
+        opacity: 1,
+        rotation: 0,
+        scale: 1,
+      });
+      gsap.set(closeIconRef.current, {
+        opacity: 0,
+        rotation: -90,
+        scale: 0,
+      });
+      gsap.set(dropdownRef.current, {
+        display: "none",
+        pointerEvents: "none",
+        opacity: 0,
+        y: -20,
+        scale: 0.9,
+      });
+    }
+  }, []);
+
+  const menuItems = [
+    {
+      id: 1,
+      title: "Trang chủ",
+      image: "/rectangle.svg",
+      scrollTo: "trang-chu",
+    },
+    {
+      id: 2,
+      title: "Hoạt động",
+      image: "/images/main-logo.webp",
+      scrollTo: "hoat-dong",
+    },
+    {
+      id: 3,
+      title: "Đăng ký",
+      image: "/images/qrcode.svg",
+      scrollTo: "dang-ky",
+    },
+    {
+      id: 4,
+      title: "FAQ",
+      image: "/images/ogbnlogo.svg",
+      scrollTo: "faq",
+    },
+  ];
+
+  const handleMenuClick = (scrollTo: string) => {
+    const element = document.getElementById(scrollTo);
+    if (element) {
+      setIsMenuOpen(false);
+      gsap.to(window, {
+        duration: 1.2,
+        scrollTo: {
+          y: element,
+          offsetY: 80,
+        },
+        ease: "power3.inOut",
+      });
+    }
+  };
+
   return (
     <div className={`relative w-full ${className || ""}`}>
-      <div className="relative min-h-screen w-full overflow-hidden bg-[#FDD835] flex flex-col z-20">
-        <header className="pt-6 pl-6 z-10">
-          <Image
-            src="/images/main-logo.webp"
-            alt="Logo"
-            width={120}
-            height={60}
-            className="h-10 w-auto"
-            priority
-          />
-        </header>
-
-        <div className="flex-1 flex flex-col justify-center w-full">
-          <div className="max-w-7xl mx-auto w-full">
+      <div id="trang-chu" className="relative min-h-screen w-full overflow-hidden flex flex-col z-20">
+        {/* Background Image for entire section */}
+        <Image
+          src="/background.svg"
+          alt="Background"
+          width={4000}
+          height={3240}
+          className="absolute inset-0 w-full h-full object-cover z-0 scale-300"
+          priority
+        />
+        
+        <header className="p-6 z-10 relative">
+          <div
+            ref={menuRef}
+            className="flex items-center justify-start gap-4 bg-white rounded-lg p-2 w-fit relative"
+          >
             <Image
-              src="/images/main-logo.webp"
+              src="/rectangle.svg"
               alt="Logo"
-              width={300}
-              height={400}
-              className="mx-auto object-contain max-h-[20vh] w-auto"
+              width={130}
+              height={80}
+              className="h-12 w-auto"
               priority
             />
-          </div>
+            <button
+              onClick={toggleMenu}
+              className="relative w-10 h-10 cursor-pointer"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              onMouseEnter={(e) => {
+                gsap.to(e.currentTarget, {
+                  scale: 1.1,
+                  duration: 0.2,
+                  ease: "power2.out",
+                });
+              }}
+              onMouseLeave={(e) => {
+                gsap.to(e.currentTarget, {
+                  scale: 1,
+                  duration: 0.2,
+                  ease: "power2.out",
+                });
+              }}
+            >
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Menu
+                  ref={menuIconRef}
+                  size={40}
+                  strokeWidth={1.5}
+                  color="#FDD835"
+                  className="absolute"
+                />
+                <X
+                  ref={closeIconRef}
+                  size={40}
+                  strokeWidth={1.5}
+                  color="#FDD835"
+                  className="absolute"
+                />
+              </div>
+            </button>
 
-          <div className="relative w-full mt-auto h-full">
+            {/* Menu Dropdown */}
+            <div
+              ref={dropdownRef}
+              className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl border-2 border-[#FDD835] min-w-[320px] sm:min-w-[380px] md:min-w-[420px] z-50 overflow-hidden"
+            >
+                <div className="p-5 sm:p-6 md:p-7 space-y-3">
+                  {menuItems.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleMenuClick(item.scrollTo)}
+                      className="menu-item flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group"
+                    >
+                      <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={56}
+                          height={56}
+                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200"
+                        />
+                      </div>
+                      <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#FD7233] group-hover:text-[#FDD835] transition-colors duration-200">
+                        {item.title}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+          </div>
+        </header>
+
+        <div className="flex-1 flex flex-col justify-center w-full relative z-10">
+          {/* Main Logo */}
+          <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-center justify-center gap-4">
             <Image
-              className="z-10 h-fit w-full object-contain"
+              src="/workshop.svg"
+              alt="Workshop"
+              width={1000}
+              height={1000}
+              className="mx-auto object-contain w-auto scale-110 sm:scale-125 md:scale-150 lg:scale-175"
+              priority
+            />
+            <Image
+              src="/ogbn.svg"
+              alt="Logo"
+              width={1000}
+              height={1000}
+              className="mx-auto object-contain w-auto"
+              priority
+            />
+          </div> 
+
+          {/* Bàn thờ Image */}
+          <div className="relative z-10 w-full mt-auto h-full">
+            <Image
+              className="h-fit w-full object-contain"
               src="/banthoongba.svg"
               width={1000}
               height={1000}
@@ -46,6 +356,9 @@ export default function DesktopLayout({ className }: { className?: string }) {
             />
           </div>
         </div>
+      </div>
+      <div>
+        <Image src="/caro.svg" alt="Caro" width={1000} height={1000} className="w-full h-full object-contain" priority />
       </div>
 
       <div className="relative w-full bg-[#FD7233] z-10">
@@ -129,15 +442,16 @@ export default function DesktopLayout({ className }: { className?: string }) {
         </div>
       </div>
 
-      <div className="relative">
+      {/* <div id="hoat-dong" className="relative">
         <Image
-          src="/images/ogbnlogo.svg"
+          src="/background-color.svg"
           alt="Texture background"
           width={2880}
           height={3240}
           className="absolute inset-0 w-full h-full object-cover opacity-40"
           priority
-        />
+        /> */}
+      <div id="hoat-dong" className="relative bg-white">
         <div className="relative z-10 mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16">
           <div className="max-w-4xl mx-auto flex flex-col gap-4 items-center justify-center">
             <h2 className="font-black md:text-[200px] text-[#FD7233]">
@@ -208,16 +522,19 @@ export default function DesktopLayout({ className }: { className?: string }) {
           </div>
         </div>
       </div>
+      <div>
+        <Image src="/vector.svg" alt="vector" width={1000} height={1000} className="w-full h-full object-contain" priority />
+      </div>
 
-      <div className="relative">
-        <Image
-          src="/images/ogbnlogo.svg"
+      <div id="dang-ky" className="relative bg-white">
+        {/* <Image
+          src="/background-color.svg"
           alt="Texture background"
           width={2880}
           height={3240}
           className="absolute inset-0 w-full h-full object-cover opacity-40"
           priority
-        />
+        /> */}
 
         <div className="relative z-10 w-full mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-20">
           <div className="max-w-6xl mx-auto flex flex-col gap-6 sm:gap-8 md:gap-10 items-center justify-center">
@@ -252,7 +569,7 @@ export default function DesktopLayout({ className }: { className?: string }) {
       </div>
 
       {/* FAQ Section */}
-      <div className="relative w-full bg-white">
+      <div id="faq" className="relative w-full bg-white">
         {/* Scrolling Marquee Header */}
         <div className="bg-black w-full overflow-hidden py-4 md:py-6 relative">
           <div className="flex animate-marquee whitespace-nowrap">
