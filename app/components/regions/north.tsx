@@ -213,7 +213,7 @@ export default function NorthDragDropGame({ images }: NorthDragDropGameProps) {
     <div className="w-full h-full relative">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <Image
-          src="/game-screen.svg"
+          src="/north-game.svg"
           alt="Bantho"
           className="object-cover"
           priority
@@ -361,7 +361,7 @@ export default function NorthDragDropGame({ images }: NorthDragDropGameProps) {
                 })()}
 
                 {/* Positions 2 and 3 - no gap between them */}
-                <div className="flex items-end -ml-14 sm:-ml-16 md:-ml-20 lg:-ml-24 xl:-ml-28 z-10">
+                <div className="flex items-center -ml-20 sm:-ml-24 md:-ml-28 lg:-ml-32 xl:-ml-36 z-10">
                   {positions.slice(1, 3).map((position) => {
                     const isOccupied = !!position.imageId;
                     const isLocked = position.imageId
@@ -446,7 +446,7 @@ export default function NorthDragDropGame({ images }: NorthDragDropGameProps) {
               </div>
 
               {/* Center: Position 4 */}
-              <div className="flex justify-end items-end">
+              <div className="flex flex-none justify-center items-start mx-auto">
                 {(() => {
                   const position = positions[3];
                   const isOccupied = !!position.imageId;
@@ -625,8 +625,8 @@ export default function NorthDragDropGame({ images }: NorthDragDropGameProps) {
       <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{alertTitle}</AlertDialogTitle>
-            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          <AlertDialogTitle className="text-2xl">{alertTitle}</AlertDialogTitle>
+          <AlertDialogDescription className="montserrat-400">{alertMessage}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogAction onClick={() => setAlertOpen(false)}>
             OK

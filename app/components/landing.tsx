@@ -11,6 +11,7 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -325,21 +326,21 @@ export default function LandingPage({ className }: { className?: string }) {
 
         <div className="flex-1 flex flex-col justify-center w-full relative z-10">
           {/* Main Logo */}
-          <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-center justify-center gap-4">
+          <div className="relative z-20 max-w-7xl mx-auto w-full flex flex-col items-center justify-center gap-10">
             <Image
               src="/workshop.svg"
               alt="Workshop"
               width={1000}
               height={1000}
-              className="mx-auto object-contain w-auto scale-110 sm:scale-125 md:scale-150 lg:scale-175"
+              className="mx-auto object-contain w-auto scale-80 sm:scale-90 md:scale-90 lg:scale-100"
               priority
             />
             <Image
-              src="/ogbn.svg"
+              src="/tstc.svg"
               alt="Logo"
-              width={1000}
-              height={1000}
-              className="mx-auto object-contain w-auto"
+              width={1200}
+              height={1200}
+              className="mx-auto object-contain w-auto scale-100 sm:scale-110 md:scale-120 lg:scale-130"
               priority
             />
           </div> 
@@ -361,14 +362,14 @@ export default function LandingPage({ className }: { className?: string }) {
         <Image src="/caro.svg" alt="Caro" width={1000} height={1000} className="w-full h-full object-contain" priority />
       </div>
 
-      <div className="relative w-full bg-[#FD7233] z-10">
+      <div className="relative w-full bg-linear-to-tr from-[#FD7233] to-[#fdcb35] z-10">
         <div className="container mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 z-0">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <h2 className="text-white font-black text-2xl md:text-3xl mb-4">
+              <h2 className="flex items-center justify-center text-white font-black text-4xl sm:text-5xl md:text-6xl lg:text-[200px] mb-10">
                 Tổng quan
               </h2>
-              <p className="text-white text-sm md:text-base leading-relaxed">
+              <p className="text-white text-base sm:text-lg md:text-xl lg:text-xl leading-relaxed">
                 Tiếp nối nội dung từ dự án Ông Gánh Bà Nâng. Workshop "..."
                 chính là nơi tái hiện lại bàn thờ ba miền giúp hiểu thêm ý nghĩa
                 của việc thờ cúng gia tiên một cách trực quan. Đặc biệt, trực
@@ -378,43 +379,43 @@ export default function LandingPage({ className }: { className?: string }) {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-white font-bold text-xl md:text-2xl mb-4">
+              <h3 className="text-white font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-4">
                 Workshop được diễn ra trong 3 ngày:
               </h3>
 
               <div className="space-y-6">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                  <h4 className="text-white font-bold text-lg md:text-xl mb-2">
+                  <h4 className="text-white font-bold text-lg sm:text-xl md:text-xl lg:text-xl mb-2">
                     Ngày 21/11/2025:
                   </h4>
-                  <p className="text-white text-sm md:text-base leading-relaxed">
+                  <p className="text-white text-base sm:text-lg md:text-xl lg:text-xl leading-relaxed">
                     Tìm hiểu về đặc trưng thờ cúng tổ tiên miền Nam và workshop
                     làm tranh kiếng
                   </p>
-                  <p className="text-white text-xs md:text-sm italic mt-2">
+                  <p className="text-white text-xs sm:text-sm md:text-lg lg:text-xl italic mt-2">
                     (Loại tranh thờ đặc trưng ở miền Nam)
                   </p>
                 </div>
 
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                  <h4 className="text-white font-bold text-lg md:text-xl mb-2">
+                  <h4 className="text-white font-bold text-lg sm:text-xl md:text-xl lg:text-xl mb-2">
                     Ngày 22/11/2025:
                   </h4>
-                  <p className="text-white text-sm md:text-base leading-relaxed">
+                  <p className="text-white text-base sm:text-lg md:text-xl lg:text-xl leading-relaxed">
                     Tìm hiểu về đặc trưng thờ cúng tổ tiên miền Bắc và workshop
                     làm vàng mã
                   </p>
                 </div>
 
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                  <h4 className="text-white font-bold text-lg md:text-xl mb-2">
+                  <h4 className="text-white font-bold text-lg sm:text-xl md:text-xl lg:text-xl mb-2">
                     Ngày 23/11/2025:
                   </h4>
-                  <p className="text-white text-sm md:text-base leading-relaxed">
+                  <p className="text-white text-base sm:text-lg md:text-xl lg:text-xl leading-relaxed">
                     Tìm hiểu về đặc trưng thờ cúng tổ tiên miền Trung và
                     workshop làm hoa giấy Thanh Tiên
                   </p>
-                  <p className="text-white text-xs md:text-sm italic mt-2">
+                  <p className="text-white text-xs sm:text-sm md:text-lg lg:text-xl italic mt-2">
                     (Loại hoa thờ đặc trưng ở Huế)
                   </p>
                 </div>
@@ -423,10 +424,10 @@ export default function LandingPage({ className }: { className?: string }) {
 
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
               <div className="space-y-3">
-                <p className="text-white font-bold text-base md:text-lg">
+                <p className="text-white font-bold text-base sm:text-lg md:text-lg lg:text-xl">
                   Thời gian: 21/11/2025 - 23/11/2025
                 </p>
-                <p className="text-white font-bold text-base md:text-lg">
+                <p className="text-white font-bold text-base sm:text-lg md:text-lg lg:text-xl">
                   Địa điểm: Bảo Tàng TP.HCM (65 Lý Tự Trọng, Bến Nghé, Quận 1,
                   Thành phố Hồ Chí Minh)
                 </p>
@@ -454,16 +455,16 @@ export default function LandingPage({ className }: { className?: string }) {
       <div id="hoat-dong" className="relative bg-white">
         <div className="relative z-10 mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16">
           <div className="max-w-4xl mx-auto flex flex-col gap-4 items-center justify-center">
-            <h2 className="font-black md:text-[200px] text-[#FD7233]">
+            <h2 className="font-black text-4xl sm:text-5xl md:text-6xl lg:text-[200px] text-[#FD7233]">
               Hoạt động
             </h2>
-            <h1 className="rounded-lg text-4xl text-[#FD7233]">
-              CÓ GÌ TẠI "BIẾT ƠN LÀ BIẾT EARN" ?
+            <h1 className="rounded-lg text-xl sm:text-2xl md:text-3xl lg:text-6xl text-[#FD7233]">
+              CÓ GÌ TẠI "TẬP SỰ THỜ CÚNG" ?
             </h1>
             <div className="w-full">
               <Accordion type="single" collapsible defaultValue="item-1">
                 <AccordionItem value="item-1">
-                  <AccordionTrigger>
+                  <AccordionTrigger className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                     ĐẶC TRƯNG THỜ CÚNG MIỀN NAM (21/11)
                   </AccordionTrigger>
                   <AccordionContent className="border-l border-r border-b border-black">
@@ -484,7 +485,7 @@ export default function LandingPage({ className }: { className?: string }) {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
-                  <AccordionTrigger>
+                  <AccordionTrigger className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                     ĐẶC TRƯNG THỜ CÚNG MIỀN BẮC (22/11)
                   </AccordionTrigger>
                   <AccordionContent className="border-l border-r border-b border-black">
@@ -502,7 +503,7 @@ export default function LandingPage({ className }: { className?: string }) {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
-                  <AccordionTrigger>
+                  <AccordionTrigger className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                     ĐẶC TRƯNG THỜ CÚNG MIỀN TRUNG (23/11)
                   </AccordionTrigger>
                   <AccordionContent className="border-l border-r border-b border-black">
@@ -540,30 +541,28 @@ export default function LandingPage({ className }: { className?: string }) {
           <div className="max-w-6xl mx-auto flex flex-col gap-6 sm:gap-8 md:gap-10 items-center justify-center">
             {/* Main Heading */}
             <div className="text-center space-y-3 sm:space-y-4 md:space-y-6">
-              <h1 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-[#FD7233] leading-tight">
+              <h1 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-[#0458fd] leading-tight">
                 ĐĂNG KÝ VÉ NGAY ĐỂ NHẬN NGAY
               </h1>
-              <div className="w-24 h-1 bg-[#FD7233] mx-auto rounded-full" />
-              <h2 className="montserrat-600 text-base sm:text-lg md:text-xl lg:text-2xl text-[#FD7233] max-w-3xl mx-auto leading-relaxed">
+              <div className="w-24 h-1 bg-[#0458fd] mx-auto rounded-full" />
+              <h2 className="montserrat-600 text-base sm:text-xl md:text-2x lg:text-3xl text-[#0458fd] max-w-4xl mx-auto leading-relaxed">
                 BỘ MERCHANDISE THỜ CÚNG VÔ CÙNG ĐỘC ĐÁO
               </h2>
             </div>
 
             {/* QR Code Section */}
-            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl border-2 border-[#FD7233]/20">
                 <div className="aspect-square flex items-center justify-center bg-white rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8">
-                  <Image
-                    src="/images/qrcode.svg"
-                    alt="QR Code để đăng ký"
-                    width={600}
-                    height={600}
-                    className="w-full h-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] lg:max-w-[500px] object-contain"
-                    priority
-                  />
+                  <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfKYX-s7Nhfqey77g1Yuc3U1Zf6k4zzUP5URw56UKjtbwcdeg/viewform" target="_blank">
+                    <Image
+                      src="/qrcode.png"
+                      alt="QR Code để đăng ký"
+                      width={600}
+                      height={600}
+                      className="w-full h-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] lg:max-w-[500px] object-contain"
+                      priority
+                    />
+                  </Link>
                 </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

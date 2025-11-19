@@ -206,7 +206,7 @@ export default function SouthDragDropGame({ images }: SouthDragDropGameProps) {
     <div className="w-full h-full relative">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <Image
-          src="/game-screen.svg"
+          src="/south-game.svg"
           alt="Bantho"
           className="object-cover"
           priority
@@ -368,8 +368,8 @@ export default function SouthDragDropGame({ images }: SouthDragDropGameProps) {
       <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{alertTitle}</AlertDialogTitle>
-            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+            <AlertDialogTitle className="text-2xl">{alertTitle}</AlertDialogTitle>
+            <AlertDialogDescription className="montserrat-400">{alertMessage}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogAction onClick={() => setAlertOpen(false)}>
             OK
