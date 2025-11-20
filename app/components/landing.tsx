@@ -43,26 +43,26 @@ export default function LandingPage({ className }: { className?: string }) {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    if (!menuIconRef.current || !closeIconRef.current || !dropdownRef.current) return;
+    if (!menuIconRef.current || !closeIconRef.current || !dropdownRef.current)
+      return;
 
     const ctx = gsap.context(() => {
       if (isMenuOpen) {
         const tl = gsap.timeline();
-        
+
         // Show dropdown first
         gsap.set(dropdownRef.current, {
           display: "block",
           pointerEvents: "auto",
         });
-        
+
         tl.to(menuIconRef.current, {
           opacity: 0,
           rotation: 90,
           scale: 0,
           duration: 0.4,
           ease: "power2.inOut",
-        })
-        .fromTo(
+        }).fromTo(
           closeIconRef.current,
           {
             opacity: 0,
@@ -78,7 +78,7 @@ export default function LandingPage({ className }: { className?: string }) {
           },
           "-=0.2"
         );
-        
+
         // Animate dropdown appearance
         gsap.fromTo(
           dropdownRef.current,
@@ -95,7 +95,8 @@ export default function LandingPage({ className }: { className?: string }) {
             ease: "power3.out",
             delay: 0.1,
             onComplete: () => {
-              const menuItems = dropdownRef.current?.querySelectorAll(".menu-item");
+              const menuItems =
+                dropdownRef.current?.querySelectorAll(".menu-item");
               if (menuItems) {
                 gsap.fromTo(
                   menuItems,
@@ -117,7 +118,7 @@ export default function LandingPage({ className }: { className?: string }) {
         );
       } else {
         const tl = gsap.timeline();
-        
+
         // Animate dropdown disappearance
         if (dropdownRef.current) {
           gsap.to(dropdownRef.current, {
@@ -136,15 +137,14 @@ export default function LandingPage({ className }: { className?: string }) {
             },
           });
         }
-        
+
         tl.to(closeIconRef.current, {
           opacity: 0,
           rotation: -90,
           scale: 0,
           duration: 0.4,
           ease: "power2.inOut",
-        })
-        .fromTo(
+        }).fromTo(
           menuIconRef.current,
           {
             opacity: 0,
@@ -232,7 +232,10 @@ export default function LandingPage({ className }: { className?: string }) {
 
   return (
     <div className={`relative w-full ${className || ""}`}>
-      <div id="trang-chu" className="relative min-h-screen w-full overflow-hidden flex flex-col z-20">
+      <div
+        id="trang-chu"
+        className="relative min-h-screen w-full overflow-hidden flex flex-col z-20"
+      >
         {/* Background Image for entire section */}
         <Image
           src="/background.svg"
@@ -242,7 +245,7 @@ export default function LandingPage({ className }: { className?: string }) {
           className="absolute inset-0 w-full h-full object-cover z-0 scale-300"
           priority
         />
-        
+
         <header className="p-6 z-10 relative">
           <div
             ref={menuRef}
@@ -298,29 +301,29 @@ export default function LandingPage({ className }: { className?: string }) {
               ref={dropdownRef}
               className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl border-2 border-[#FDD835] min-w-[320px] sm:min-w-[380px] md:min-w-[420px] z-50 overflow-hidden"
             >
-                <div className="p-5 sm:p-6 md:p-7 space-y-3">
-                  {menuItems.map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={() => handleMenuClick(item.scrollTo)}
-                      className="menu-item flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group"
-                    >
-                      <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          width={56}
-                          height={56}
-                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200"
-                        />
-                      </div>
-                      <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#FD7233] group-hover:text-[#FDD835] transition-colors duration-200">
-                        {item.title}
-                      </span>
+              <div className="p-5 sm:p-6 md:p-7 space-y-3">
+                {menuItems.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => handleMenuClick(item.scrollTo)}
+                    className="menu-item flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group"
+                  >
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200"
+                      />
                     </div>
-                  ))}
-                </div>
+                    <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#FD7233] group-hover:text-[#FDD835] transition-colors duration-200">
+                      {item.title}
+                    </span>
+                  </div>
+                ))}
               </div>
+            </div>
           </div>
         </header>
 
@@ -343,7 +346,7 @@ export default function LandingPage({ className }: { className?: string }) {
               className="mx-auto object-contain w-auto scale-100 sm:scale-110 md:scale-120 lg:scale-130"
               priority
             />
-          </div> 
+          </div>
 
           {/* Bàn thờ Image */}
           <div className="relative z-10 w-full mt-auto h-full">
@@ -359,7 +362,14 @@ export default function LandingPage({ className }: { className?: string }) {
         </div>
       </div>
       <div>
-        <Image src="/caro.svg" alt="Caro" width={1000} height={1000} className="w-full h-full object-contain" priority />
+        <Image
+          src="/caro.svg"
+          alt="Caro"
+          width={1000}
+          height={1000}
+          className="w-full h-full object-contain"
+          priority
+        />
       </div>
 
       <div className="relative w-full bg-linear-to-tr from-[#FD7233] to-[#fdcb35] z-10">
@@ -469,18 +479,18 @@ export default function LandingPage({ className }: { className?: string }) {
                   </AccordionTrigger>
                   <AccordionContent className="border-l border-r border-b border-black">
                     <p className="text-sm montserrat-400">
-                      ĐẶC TRƯNG THỜ CÚNG MIỀN NAM Miền Nam là vùng đất "tứ xứ",
-                      nơi hội tụ và giao thoa văn hóa mạnh mẽ giữa các cộng đồng
-                      người Kinh, Hoa và Khmer. Dù mang theo truyền thống từ
-                      cuộc "mở cõi" ở miền Bắc và miền Trung, người dân Nam Bộ
-                      vẫn giữ gìn trọn vẹn nếp thờ cúng tổ tiên qua bao thăng
-                      trầm lịch sử. Chính sự hòa quyện văn hóa độc đáo này đã
-                      tạo nên một bản sắc thờ cúng riêng biệt, thể hiện qua cả
-                      các nghi lễ lẫn những vật phẩm thờ tự phong phú, rực rỡ.
-                      Hãy cũng tụi mình tìm hiểu kĩ hơn vào vào ngày 21/11/2025
-                      nha! <br /> Thời gian: <br /> Ca 2: <br /> Ca 3: <br />{" "}
-                      Speaker: Nguyễn Duy Linh - Nhà sưu tập đồ thờ cúng miền
-                      Nam?????
+                      Miền Nam là vùng đất "tứ xứ", nơi hội tụ và giao thoa văn
+                      hóa mạnh mẽ giữa các cộng đồng người Kinh, Hoa và Khmer.
+                      Dù mang theo truyền thống từ cuộc "mở cõi" ở miền Bắc và
+                      miền Trung, người dân Nam Bộ vẫn giữ gìn trọn vẹn nếp thờ
+                      cúng tổ tiên qua bao thăng trầm lịch sử. Chính sự hòa
+                      quyện văn hóa độc đáo này đã tạo nên một bản sắc thờ cúng
+                      riêng biệt, thể hiện qua cả các nghi lễ lẫn những vật phẩm
+                      thờ tự phong phú, rực rỡ. Hãy cũng tụi mình tìm hiểu kĩ
+                      hơn vào vào ngày 21/11/2025 nha!
+                      <br />
+                      <br />
+                      Ca 1: 9:00 - 12:00 <br /> Ca 2: 13:00 - 16:00
                     </p>
                   </AccordionContent>
                 </AccordionItem>
@@ -490,15 +500,15 @@ export default function LandingPage({ className }: { className?: string }) {
                   </AccordionTrigger>
                   <AccordionContent className="border-l border-r border-b border-black">
                     <p className="text-sm montserrat-400">
-                      ĐẶC TRƯNG THỜ CÚNG MIỀN BẮC Nổi bật với tính "nghi lễ" và
-                      chuẩn mực. Người Bắc rất coi trọng thứ bậc, vai trò con
-                      trưởng và các nghi thức truyền thống. Mặc dù là một vùng
-                      đất chịu ảnh hưởng của các tư tưởng, tôn giáo của Trung
-                      Hoa nhưng văn hoá thờ cúng tổ tiên của người miền Bắc chỉ
-                      tiếp biến những văn hoá đó sao cho phù hợp chứ không hoà
-                      trộn. Thời gian: <br /> Ca 1: 8:00 - <br /> Ca 2: <br />{" "}
-                      Ca 3: <br /> Speaker: Nguyễn Duy Linh - Nhà sưu tập đồ thờ
-                      cúng miền Bắc?????
+                      Nổi bật với tính "nghi lễ" và chuẩn mực. Người Bắc rất coi
+                      trọng thứ bậc, vai trò con trưởng và các nghi thức truyền
+                      thống. Mặc dù là một vùng đất chịu ảnh hưởng của các tư
+                      tưởng, tôn giáo của Trung Hoa nhưng văn hoá thờ cúng tổ
+                      tiên của người miền Bắc chỉ tiếp biến những văn hoá đó sao
+                      cho phù hợp chứ không hoà trộn. Thời gian:<br />
+                      <br />
+                      Ca 1: 9:00 - 11:30 <br />
+                      Ca 2: 13:00 - 15:30 <br />
                     </p>
                   </AccordionContent>
                 </AccordionItem>
@@ -508,13 +518,15 @@ export default function LandingPage({ className }: { className?: string }) {
                   </AccordionTrigger>
                   <AccordionContent className="border-l border-r border-b border-black">
                     <p className="text-sm montserrat-400">
-                      ĐẶC TRƯNG THỜ CÚNG MIỀN TRUNG Miền Trung: Đặc trưng bởi sự
-                      "chu đáo" và "tinh tế". Chịu ảnh hưởng văn hóa cung đình,
-                      mâm cỗ cúng có thể không quá thịnh soạn nhưng luôn phải
-                      chỉn chu, tinh tế và được chuẩn bị một cách cẩn trọng
-                      nhất. Thời gian: <br /> Ca 1: <br /> Ca 2: <br /> Ca 3:{" "}
-                      <br /> Speaker: Nguyễn Duy Linh - Nhà sưu tập đồ thờ cúng
-                      miền Trung?????
+                      Miền Trung: Đặc trưng bởi sự "chu đáo" và "tinh tế". Chịu
+                      ảnh hưởng văn hóa cung đình, mâm cỗ cúng có thể không quá
+                      thịnh soạn nhưng luôn phải chỉn chu, tinh tế và được chuẩn
+                      bị một cách cẩn trọng nhất.<br/>
+                      <br /> Ca 1: 9:00 - 10:30
+                      <br />
+                      Ca 2: 10:30 - 12:00 <br />
+                      Ca 3: 13:00 - 14:30 <br />
+                      Ca 4: 14:30 - 16:00 <br />
                     </p>
                   </AccordionContent>
                 </AccordionItem>
@@ -524,7 +536,14 @@ export default function LandingPage({ className }: { className?: string }) {
         </div>
       </div>
       <div>
-        <Image src="/vector.svg" alt="vector" width={1000} height={1000} className="w-full h-full object-contain" priority />
+        <Image
+          src="/vector.svg"
+          alt="vector"
+          width={1000}
+          height={1000}
+          className="w-full h-full object-contain"
+          priority
+        />
       </div>
 
       <div id="dang-ky" className="relative bg-white">
@@ -551,18 +570,21 @@ export default function LandingPage({ className }: { className?: string }) {
             </div>
 
             {/* QR Code Section */}
-                <div className="aspect-square flex items-center justify-center bg-white rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8">
-                  <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfKYX-s7Nhfqey77g1Yuc3U1Zf6k4zzUP5URw56UKjtbwcdeg/viewform" target="_blank">
-                    <Image
-                      src="/qrcode.png"
-                      alt="QR Code để đăng ký"
-                      width={600}
-                      height={600}
-                      className="w-full h-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] lg:max-w-[500px] object-contain"
-                      priority
-                    />
-                  </Link>
-                </div>
+            <div className="aspect-square flex items-center justify-center bg-white rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8">
+              <Link
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfKYX-s7Nhfqey77g1Yuc3U1Zf6k4zzUP5URw56UKjtbwcdeg/viewform"
+                target="_blank"
+              >
+                <Image
+                  src="/qrcode.png"
+                  alt="QR Code để đăng ký"
+                  width={600}
+                  height={600}
+                  className="w-full h-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] lg:max-w-[500px] object-contain"
+                  priority
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -623,7 +645,7 @@ export default function LandingPage({ className }: { className?: string }) {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="item-2" className="border-none">
+              {/* <AccordionItem value="item-2" className="border-none">
                 <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
                   <span className="flex items-center justify-center text-base md:text-lg montserrat-500 underline flex-1 text-left">
                     Có vật dụng gì không được mang vào triễn lãm không?
@@ -635,7 +657,7 @@ export default function LandingPage({ className }: { className?: string }) {
                     cồn từ bên ngoài, và các vật dụng nguy hiểm khác.
                   </p>
                 </AccordionContent>
-              </AccordionItem>
+              </AccordionItem> */}
 
               <AccordionItem value="item-3" className="border-none">
                 <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
@@ -645,13 +667,12 @@ export default function LandingPage({ className }: { className?: string }) {
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 flex items-center justify-center">
                   <p className="text-sm md:text-base montserrat-400 text-black">
-                    Sự kiện hoàn toàn miễn phí. Bạn chỉ cần đăng ký để nhận vé
-                    tham dự.
+                  Sự kiện “Ông Gánh Bà Nâng” HOÀN TOÀN MIỄN PHÍ và còn được MANG THÀNH PHẨM VỀ!
                   </p>
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="item-4" className="border-none">
+              {/* <AccordionItem value="item-4" className="border-none">
                 <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
                   <span className="flex items-center justify-center text-base md:text-lg montserrat-500 underline flex-1 text-left">
                     Làm sao để cập nhật được lịch trình sự kiện diễn ra tại
@@ -665,7 +686,7 @@ export default function LandingPage({ className }: { className?: string }) {
                     cập nhật thường xuyên.
                   </p>
                 </AccordionContent>
-              </AccordionItem>
+              </AccordionItem> */}
 
               <AccordionItem value="item-5" className="border-none">
                 <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
@@ -691,9 +712,9 @@ export default function LandingPage({ className }: { className?: string }) {
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 flex items-center justify-center">
                   <p className="text-sm md:text-base montserrat-400 text-black">
-                    Hãy đến đúng giờ, mang theo vé đã đăng ký, mặc trang phục
-                    phù hợp, và sẵn sàng tham gia các hoạt động tương tác để có
-                    trải nghiệm tốt nhất.
+                   Mỗi ca của sự kiện TỐI ĐA 30 SLOT, nên là tụi mình kín chỗ thì mọi người vui lòng đăng ký ca khác hoặc ngày khác nhen.
+                   <br />
+                   Mỗi lượt tham gia sẽ khoảng 2 tiếng nên các bạn hãy dành thời gian để buổi trải nghiệm được trọn vẹn nha.
                   </p>
                 </AccordionContent>
               </AccordionItem>
@@ -706,8 +727,8 @@ export default function LandingPage({ className }: { className?: string }) {
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 flex items-center justify-center">
                   <p className="text-sm md:text-base montserrat-400 text-black">
-                    Bạn có thể liên hệ qua email: info@ongganhbanang.com hoặc
-                    qua hotline: 1900-xxxx. Chúng tôi sẽ phản hồi trong vòng 24
+                    Bạn có thể liên hệ qua email: ongganhbanang@gmail.com hoặc
+                    qua hotline: 0973779439. Chúng tôi sẽ phản hồi trong vòng 24
                     giờ.
                   </p>
                 </AccordionContent>
