@@ -9,18 +9,11 @@ import {
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Link from "next/link";
-
-gsap.registerPlugin(ScrollToPlugin);
 
 export default function LandingPage({ className }: { className?: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuIconRef = useRef<SVGSVGElement>(null);
-  const closeIconRef = useRef<SVGSVGElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,165 +21,23 @@ export default function LandingPage({ className }: { className?: string }) {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      
+      // Check if click is outside menu and menu is open
+      if (isMenuOpen && menuRef.current && !menuRef.current.contains(target)) {
         setIsMenuOpen(false);
       }
     };
 
     if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      // Use click event (bubble phase) to allow menu item clicks to process first
+      document.addEventListener("click", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isMenuOpen]);
-
-  useEffect(() => {
-    if (!menuIconRef.current || !closeIconRef.current || !dropdownRef.current)
-      return;
-
-    const ctx = gsap.context(() => {
-      if (isMenuOpen) {
-        const tl = gsap.timeline();
-
-        // Show dropdown first
-        gsap.set(dropdownRef.current, {
-          display: "block",
-          pointerEvents: "auto",
-        });
-
-        tl.to(menuIconRef.current, {
-          opacity: 0,
-          rotation: 90,
-          scale: 0,
-          duration: 0.4,
-          ease: "power2.inOut",
-        }).fromTo(
-          closeIconRef.current,
-          {
-            opacity: 0,
-            rotation: -90,
-            scale: 0,
-          },
-          {
-            opacity: 1,
-            rotation: 0,
-            scale: 1,
-            duration: 0.5,
-            ease: "back.out(1.7)",
-          },
-          "-=0.2"
-        );
-
-        // Animate dropdown appearance
-        gsap.fromTo(
-          dropdownRef.current,
-          {
-            opacity: 0,
-            y: -20,
-            scale: 0.9,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.5,
-            ease: "power3.out",
-            delay: 0.1,
-            onComplete: () => {
-              const menuItems =
-                dropdownRef.current?.querySelectorAll(".menu-item");
-              if (menuItems) {
-                gsap.fromTo(
-                  menuItems,
-                  {
-                    opacity: 0,
-                    x: -20,
-                  },
-                  {
-                    opacity: 1,
-                    x: 0,
-                    duration: 0.4,
-                    ease: "power2.out",
-                    stagger: 0.1,
-                  }
-                );
-              }
-            },
-          }
-        );
-      } else {
-        const tl = gsap.timeline();
-
-        // Animate dropdown disappearance
-        if (dropdownRef.current) {
-          gsap.to(dropdownRef.current, {
-            opacity: 0,
-            y: -20,
-            scale: 0.9,
-            duration: 0.3,
-            ease: "power2.in",
-            onComplete: () => {
-              if (dropdownRef.current) {
-                gsap.set(dropdownRef.current, {
-                  display: "none",
-                  pointerEvents: "none",
-                });
-              }
-            },
-          });
-        }
-
-        tl.to(closeIconRef.current, {
-          opacity: 0,
-          rotation: -90,
-          scale: 0,
-          duration: 0.4,
-          ease: "power2.inOut",
-        }).fromTo(
-          menuIconRef.current,
-          {
-            opacity: 0,
-            rotation: 90,
-            scale: 0,
-          },
-          {
-            opacity: 1,
-            rotation: 0,
-            scale: 1,
-            duration: 0.5,
-            ease: "back.out(1.7)",
-          },
-          "-=0.2"
-        );
-      }
-    });
-
-    return () => ctx.revert();
-  }, [isMenuOpen]);
-
-  useEffect(() => {
-    if (menuIconRef.current && closeIconRef.current && dropdownRef.current) {
-      gsap.set(menuIconRef.current, {
-        opacity: 1,
-        rotation: 0,
-        scale: 1,
-      });
-      gsap.set(closeIconRef.current, {
-        opacity: 0,
-        rotation: -90,
-        scale: 0,
-      });
-      gsap.set(dropdownRef.current, {
-        display: "none",
-        pointerEvents: "none",
-        opacity: 0,
-        y: -20,
-        scale: 0.9,
-      });
-    }
-  }, []);
 
   const menuItems = [
     {
@@ -204,7 +55,7 @@ export default function LandingPage({ className }: { className?: string }) {
     {
       id: 3,
       title: "Đăng ký",
-      image: "/qrcode.pngs",
+      image: "/qrcode.png",
       scrollTo: "dang-ky",
     },
     {
@@ -215,19 +66,28 @@ export default function LandingPage({ className }: { className?: string }) {
     },
   ];
 
-  const handleMenuClick = (scrollTo: string) => {
-    const element = document.getElementById(scrollTo);
-    if (element) {
-      setIsMenuOpen(false);
-      gsap.to(window, {
-        duration: 1.2,
-        scrollTo: {
-          y: element,
-          offsetY: 80,
-        },
-        ease: "power3.inOut",
-      });
-    }
+  const handleMenuClick = (scrollTo: string, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    
+    setIsMenuOpen(false);
+    
+    // Use requestAnimationFrame for better timing
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const element = document.getElementById(scrollTo);
+        if (element) {
+          const headerOffset = 80; // Account for fixed header if any
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 150);
+    });
   };
 
   return (
@@ -246,10 +106,10 @@ export default function LandingPage({ className }: { className?: string }) {
           priority
         />
 
-        <header className="p-6 z-10 relative">
+        <header className="p-6 z-[100] relative">
           <div
             ref={menuRef}
-            className="flex items-center justify-start gap-4 bg-white rounded-lg p-2 w-fit relative"
+            className="flex items-center justify-start gap-4 bg-white rounded-lg p-2 w-fit relative z-[100]"
           >
             <Image
               src="/rectangle.svg"
@@ -261,79 +121,59 @@ export default function LandingPage({ className }: { className?: string }) {
             />
             <button
               onClick={toggleMenu}
-              className="relative w-10 h-10 cursor-pointer"
+              className="relative w-10 h-10 cursor-pointer hover:scale-110 transition-transform"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              onMouseEnter={(e) => {
-                gsap.to(e.currentTarget, {
-                  scale: 1.1,
-                  duration: 0.2,
-                  ease: "power2.out",
-                });
-              }}
-              onMouseLeave={(e) => {
-                gsap.to(e.currentTarget, {
-                  scale: 1,
-                  duration: 0.2,
-                  ease: "power2.out",
-                });
-              }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Menu
-                  ref={menuIconRef}
-                  size={40}
-                  strokeWidth={1.5}
-                  color="#FDD835"
-                  className="absolute"
-                />
-                <X
-                  ref={closeIconRef}
-                  size={40}
-                  strokeWidth={1.5}
-                  color="#FDD835"
-                  className="absolute"
-                />
-              </div>
+              {isMenuOpen ? (
+                <X size={40} strokeWidth={1.5} color="#FDD835" />
+              ) : (
+                <Menu size={40} strokeWidth={1.5} color="#FDD835" />
+              )}
             </button>
 
             {/* Menu Dropdown */}
-            <div
-              ref={dropdownRef}
-              className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl border-2 border-[#FDD835] min-w-[320px] sm:min-w-[380px] md:min-w-[420px] z-50 overflow-hidden"
-            >
-              <div className="p-5 sm:p-6 md:p-7 space-y-3">
-                {menuItems.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={() => handleMenuClick(item.scrollTo)}
-                    className="menu-item flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group"
+            {isMenuOpen && (
+              <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl border-2 border-[#FDD835] min-w-[320px] sm:min-w-[380px] md:min-w-[420px] z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="p-5 sm:p-6 md:p-7 space-y-3">
+                  {menuItems.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={(e) => handleMenuClick(item.scrollTo, e)}
+                      className="menu-item w-full flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group"
+                      type="button"
+                    >
+                      <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={56}
+                          height={56}
+                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200"
+                        />
+                      </div>
+                      <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#FD7233] group-hover:text-[#FDD835] transition-colors duration-200">
+                        {item.title}
+                      </span>
+                    </button>
+                  ))}
+                  <Link 
+                    href="/games" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsMenuOpen(false);
+                    }}
+                    className="menu-item w-full flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group relative z-50"
                   >
-                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={56}
-                        height={56}
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200"
-                      />
-                    </div>
-                    <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#FD7233] group-hover:text-[#FDD835] transition-colors duration-200">
-                      {item.title}
-                    </span>
-                  </div>
-                ))}
-                <Link href="/games" className="menu-item flex items-center gap-5rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group">
-                  <div className="menu-item flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group">
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
                       <Image src="/north.svg" alt="Game" width={56} height={56} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200" />
                     </div>
                     <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#FD7233] group-hover:text-[#FDD835] transition-colors duration-200">
                       Trò chơi
                     </span>
-                  </div>
                   </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </header>
 
@@ -463,15 +303,6 @@ export default function LandingPage({ className }: { className?: string }) {
         </div>
       </div>
 
-      {/* <div id="hoat-dong" className="relative">
-        <Image
-          src="/background-color.svg"
-          alt="Texture background"
-          width={2880}
-          height={3240}
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-          priority
-        /> */}
       <div id="hoat-dong" className="relative bg-white">
         <div className="relative z-10 mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16">
           <div className="max-w-4xl mx-auto flex flex-col gap-4 items-center justify-center">
@@ -557,15 +388,6 @@ export default function LandingPage({ className }: { className?: string }) {
       </div>
 
       <div id="dang-ky" className="relative bg-white">
-        {/* <Image
-          src="/background-color.svg"
-          alt="Texture background"
-          width={2880}
-          height={3240}
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-          priority
-        /> */}
-
         <div className="relative z-10 w-full mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-20">
           <div className="max-w-6xl mx-auto flex flex-col gap-6 sm:gap-8 md:gap-10 items-center justify-center">
             {/* Main Heading */}
@@ -655,20 +477,6 @@ export default function LandingPage({ className }: { className?: string }) {
                 </AccordionContent>
               </AccordionItem>
 
-              {/* <AccordionItem value="item-2" className="border-none">
-                <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
-                  <span className="flex items-center justify-center text-base md:text-lg montserrat-500 underline flex-1 text-left">
-                    Có vật dụng gì không được mang vào triễn lãm không?
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="pt-4 pb-6 flex items-center justify-center">
-                  <p className="text-sm md:text-base montserrat-400 text-black">
-                    Vui lòng không mang theo vũ khí, chất kích thích, đồ uống có
-                    cồn từ bên ngoài, và các vật dụng nguy hiểm khác.
-                  </p>
-                </AccordionContent>
-              </AccordionItem> */}
-
               <AccordionItem value="item-3" className="border-none">
                 <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
                   <span className="flex items-center justify-center text-base md:text-lg montserrat-500 underline flex-1 text-left">
@@ -677,26 +485,10 @@ export default function LandingPage({ className }: { className?: string }) {
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 flex items-center justify-center">
                   <p className="text-sm md:text-base montserrat-400 text-black">
-                  Sự kiện “Ông Gánh Bà Nâng” HOÀN TOÀN MIỄN PHÍ và còn được MANG THÀNH PHẨM VỀ!
+                  Sự kiện "Ông Gánh Bà Nâng" HOÀN TOÀN MIỄN PHÍ và còn được MANG THÀNH PHẨM VỀ!
                   </p>
                 </AccordionContent>
               </AccordionItem>
-
-              {/* <AccordionItem value="item-4" className="border-none">
-                <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
-                  <span className="flex items-center justify-center text-base md:text-lg montserrat-500 underline flex-1 text-left">
-                    Làm sao để cập nhật được lịch trình sự kiện diễn ra tại
-                    triễn lãm?
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="pt-4 pb-6 flex items-center justify-center">
-                  <p className="text-sm md:text-base montserrat-400 text-black">
-                    Bạn có thể theo dõi lịch trình sự kiện trên website chính
-                    thức hoặc trang Facebook của chúng tôi. Thông tin sẽ được
-                    cập nhật thường xuyên.
-                  </p>
-                </AccordionContent>
-              </AccordionItem> */}
 
               <AccordionItem value="item-5" className="border-none">
                 <AccordionTrigger className="hover:no-underline bg-transparent text-black hover:bg-gray-50 text-left py-4 border-b border-gray-200 [&>svg]:text-black [&>svg]:rotate-0 [&[data-state=open]>svg]:rotate-180">
