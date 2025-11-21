@@ -204,7 +204,7 @@ export default function LandingPage({ className }: { className?: string }) {
     {
       id: 3,
       title: "Đăng ký",
-      image: "/qrcode.png",
+      image: "/qrcode.pngs",
       scrollTo: "dang-ky",
     },
     {
@@ -322,7 +322,7 @@ export default function LandingPage({ className }: { className?: string }) {
                     </span>
                   </div>
                 ))}
-                <Link href="/" className="menu-item flex items-center gap-5rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group">
+                <Link href="/games" className="menu-item flex items-center gap-5rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group">
                   <div className="menu-item flex items-center gap-5 p-4 rounded-lg hover:bg-[#FDD835]/10 transition-colors duration-200 cursor-pointer group">
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
                       <Image src="/north.svg" alt="Game" width={56} height={56} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200" />
