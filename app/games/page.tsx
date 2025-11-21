@@ -146,7 +146,7 @@ export default function GamesPage() {
         },
         {
           id: "image-3",
-          src: "/luhuong.svg",
+          src: "/nuoc.svg",
           alertTitle: "Lư hương",
           alertMessage:
             "Có thể đặt một hoặc ba bát hương nhưng vị trí luôn ở chính giữa bàn thờ để giữ mạch kết nối giữa thần linh và gia tiên.",
