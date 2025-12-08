@@ -165,9 +165,9 @@ export default function GamesPage() {
         {
           id: "image-5",
           src: "/hoa-thanh-tien.svg",
-          alertTitle: "Bình hoa",
+          alertTitle: "Hoa Thanh Tiên",
           alertMessage:
-            "Nhiều gia đình theo bố cục Đông Bình – Tây Quả hoặc đặt đôi bình đối xứng để giữ sự cân bằng của không gian thờ tự.",
+            "Loài hoa sinh ra từ sự khắc nghiệt miền Trung, mỏng manh nhưng chứa đựng ý nghĩa sau sắc: 3 bông lớn tượng trưng Tam Cương (Trung – Hiếu – Nghĩa) và 5 bông nhỏ tượng trưng Ngũ Thường (Nhân – Lễ – Nghĩa – Trí – Tín). Hoa Thanh Tiên trân trọng trưng trên bàn thờ gia tiên, bàn thờ Táo Quân và các am thờ trong gia đình người Huế.",
           wrongPositionMessage: wrongMessages[0],
           hintMessage: hintMessages[0],
         },
